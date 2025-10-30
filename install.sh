@@ -60,11 +60,23 @@ if [ -z "$GIT_RECENT_ALIAS" ]; then
 fi
 
 # ------------- INSTALL ALIAS -------------
-log_info "Installing 'git $ALIAS_NAME' alias globally..."
-git config --global alias.$ALIAS_NAME "!bash -c '$GIT_RECENT_ALIAS'"
+GITCONFIG="$HOME/.gitconfig"
+BACKUP="$HOME/.gitconfig.bak_$(date +%s)"
 
-# ------------- VERIFY -------------
-if git $ALIAS_NAME &>/dev/null; then
+log_info "Backing up existing .gitconfig to $BACKUP"
+cp "$GITCONFIG" "$BACKUP" 2>/dev/null || true
+
+log_info "Installing 'git $ALIAS_NAME' alias globally..."
+
+# Remove old alias if it exists
+git config --global --remove-section alias.$ALIAS_NAME >/dev/null 2>&1 || true
+
+# Inject the alias properly escaped
+git config --global alias.$ALIAS_NAME "!{ git ls-files -m; git ls-files --others --exclude-standard; } | xargs -r stat -c \"%y %n\" 2>/dev/null | sort -r | awk '{ts=$1\" \"$2; $1=$2=\"\"; printf \"\\033[2m%s\\033[0m  \\033[1;32m%s\\033[0m\\n\", ts, substr($0,3)}'"
+
+# ------------- VERIFY INSTALLATION -------------
+if git config --global --get alias.$ALIAS_NAME >/dev/null; then
+  echo
   log_info "✅ Successfully installed 'git $ALIAS_NAME'!"
   echo
   log_info "👉 Try it out:"
@@ -73,5 +85,6 @@ if git $ALIAS_NAME &>/dev/null; then
   log_info "🧠 Tip: Run inside any Git repo to see your most recently modified files."
 else
   log_error "Installation failed. Please check your global .gitconfig manually."
+  echo "Backup saved at: $BACKUP"
   exit 1
 fi

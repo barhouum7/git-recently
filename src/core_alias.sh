@@ -5,21 +5,5 @@
 # =====================================================
 
 ### ALIAS START ###
-files=$(git status --porcelain | awk '{print $2}' | sort -u)
-if [ -z "$files" ]; then
-  echo "No unstaged or untracked files."
-  exit 0
-fi
-
-tmpfile=$(mktemp)
-
-for f in $files; do
-  if [ -e "$f" ]; then
-    ts=$(stat -c "%y" "$f" 2>/dev/null || gstat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" "$f")
-    printf "%s %s\n" "$ts" "$f" >> "$tmpfile"
-  fi
-done
-
-sort -r "$tmpfile"
-rm -f "$tmpfile"
+!{ git ls-files -m; git ls-files --others --exclude-standard; } | xargs -r stat -c \"%y %n\" 2>/dev/null | sort -r | awk '{ts=$1\" \"$2; $1=$2=\"\"; printf \"\\033[2m%s\\033[0m  \\033[1;32m%s\\033[0m\\n\", ts, substr($0,3)}'
 ### ALIAS END ###
