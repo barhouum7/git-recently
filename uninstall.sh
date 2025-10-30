@@ -12,4 +12,3 @@ if git config --global --get alias.$ALIAS_NAME &>/dev/null; then
 else
   echo "ℹ️ No 'git $ALIAS_NAME' alias found in your config."
 fi
-echo "Uninstallation complete."
