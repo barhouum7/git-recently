@@ -9,7 +9,6 @@ set -e
 
 REPO_URL="https://raw.githubusercontent.com/barhouum7/git-recently/master"
 ALIAS_NAME="recent"
-GIT_CORE_URL="$REPO_URL/src/core_alias.sh"
 
 # ------------- COLORS & LOGGING -------------
 BOLD=$(tput bold)
@@ -47,17 +46,13 @@ if ! command -v stat &>/dev/null && ! command -v gstat &>/dev/null; then
   exit 1
 fi
 
-# ------------- FETCH CORE LOGIC -------------
-log_info "Fetching alias logic from GitHub..."
-if ! GIT_RECENT_ALIAS=$(curl -fsSL "$GIT_CORE_URL" | sed -n '/^### ALIAS START ###/,/^### ALIAS END ###/p' | sed '1d;$d'); then
-  log_error "Failed to fetch alias logic from $GIT_CORE_URL"
-  exit 1
-fi
+# Remove old alias if it exists
+git config --global --remove-section alias.$ALIAS_NAME >/dev/null 2>&1 || true
 
-if [ -z "$GIT_RECENT_ALIAS" ]; then
-  log_error "No alias logic fetched. Check the repository content or URL."
-  exit 1
-fi
+# ------------- ALIAS DEFINITION -------------
+# Injecting the alias command directly here
+# Escaped properly for Git config storage
+ALIAS_CMD="!{ git ls-files -m; git ls-files --others --exclude-standard; } | xargs -r stat -c \"%y %n\" 2>/dev/null | sort -r | awk '{ts=$1\" \"$2; $1=$2=\"\"; printf \"\\033[2m%s\\033[0m  \\033[1;32m%s\\033[0m\\n\", ts, substr($0,3)}'"
 
 # ------------- INSTALL ALIAS -------------
 GITCONFIG="$HOME/.gitconfig"
@@ -67,12 +62,7 @@ log_info "Backing up existing .gitconfig to $BACKUP"
 cp "$GITCONFIG" "$BACKUP" 2>/dev/null || true
 
 log_info "Installing 'git $ALIAS_NAME' alias globally..."
-
-# Remove old alias if it exists
-git config --global --remove-section alias.$ALIAS_NAME >/dev/null 2>&1 || true
-
-# Inject the alias properly escaped
-git config --global alias.$ALIAS_NAME "!{ git ls-files -m; git ls-files --others --exclude-standard; } | xargs -r stat -c \"%y %n\" 2>/dev/null | sort -r | awk '{ts=$1\" \"$2; $1=$2=\"\"; printf \"\\033[2m%s\\033[0m  \\033[1;32m%s\\033[0m\\n\", ts, substr($0,3)}'"
+git config --global alias.$ALIAS_NAME "$ALIAS_CMD"
 
 # ------------- VERIFY INSTALLATION -------------
 if git config --global --get alias.$ALIAS_NAME >/dev/null; then
