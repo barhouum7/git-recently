@@ -9,6 +9,13 @@ set -e
 
 REPO_URL="https://raw.githubusercontent.com/barhouum7/git-recently/master"
 ALIAS_NAME="recent"
+# ------------- ALIAS DEFINITION -------------
+# Injecting the alias command directly here
+# Escaped properly for Git config storage
+ALIAS_CMD='!{ git ls-files -m; git ls-files --others --exclude-standard; } | xargs -r stat -c "%y %n" 2>/dev/null | sort -r | awk '"'"'{ts=$1" "$2; $1=$2=""; printf "\033[2m%s\033[0m  \033[1;32m%s\033[0m\n", ts, substr($0,3)}'"'"''
+
+# ALIAS_CMD='!{ git ls-files -m; git ls-files --others --exclude-standard; } | tr -d "\r" | awk NF | sort -u | xargs -r -d "\n" stat -c "%y %n" 2>/dev/null | sort -r | awk '\''{ts=$1" "$2; $1=$2=""; printf "\033[2m%s\033[0m  \033[1;32m%s\033[0m\n", ts, substr($0,3)}'\'''
+
 
 # ------------- COLORS & LOGGING -------------
 BOLD=$(tput bold)
@@ -46,26 +53,25 @@ if ! command -v stat &>/dev/null && ! command -v gstat &>/dev/null; then
   exit 1
 fi
 
-# Remove old alias if it exists
-git config --global --remove-section alias.$ALIAS_NAME >/dev/null 2>&1 || true
-
-# ------------- ALIAS DEFINITION -------------
-# Injecting the alias command directly here
-# Escaped properly for Git config storage
-ALIAS_CMD="!{ git ls-files -m; git ls-files --others --exclude-standard; } | xargs -r stat -c \"%y %n\" 2>/dev/null | sort -r | awk '{ts=$1\" \"$2; $1=$2=\"\"; printf \"\\033[2m%s\\033[0m  \\033[1;32m%s\\033[0m\\n\", ts, substr($0,3)}'"
-
-# ------------- INSTALL ALIAS -------------
+# ------------- BACKUP CONFIG -------------
 GITCONFIG="$HOME/.gitconfig"
 BACKUP="$HOME/.gitconfig.bak_$(date +%s)"
+if [ -f "$GITCONFIG" ]; then
+  log_info "Backing up existing .gitconfig to $BACKUP"
+  cp "$GITCONFIG" "$BACKUP" 2>/dev/null || true
+fi
 
-log_info "Backing up existing .gitconfig to $BACKUP"
-cp "$GITCONFIG" "$BACKUP" 2>/dev/null || true
+# ------------- REMOVE OLD ALIAS -------------
+git config --global --unset "alias.$ALIAS_NAME" >/dev/null 2>&1 || true
 
+# ------------- INSTALL ALIAS -------------
 log_info "Installing 'git $ALIAS_NAME' alias globally..."
-git config --global alias.$ALIAS_NAME "$ALIAS_CMD"
+git config --global alias."$ALIAS_NAME" "$ALIAS_CMD"
 
 # ------------- VERIFY INSTALLATION -------------
-if git config --global --get alias.$ALIAS_NAME >/dev/null; then
+STORED_ALIAS=$(git config --global --get alias.$ALIAS_NAME)
+
+if [ "$STORED_ALIAS" = "$ALIAS_CMD" ]; then
   echo
   log_info "✅ Successfully installed 'git $ALIAS_NAME'!"
   echo
@@ -74,7 +80,7 @@ if git config --global --get alias.$ALIAS_NAME >/dev/null; then
   echo
   log_info "🧠 Tip: Run inside any Git repo to see your most recently modified files."
 else
-  log_error "Installation failed. Please check your global .gitconfig manually."
+  log_error "Installation verification failed. Stored alias doesn't match expected command."
   echo "Backup saved at: $BACKUP"
   exit 1
 fi
