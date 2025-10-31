@@ -1,20 +1,35 @@
 # git-recently 🧠
 
-A simple, fast CLI tool to view your most recently modified (unstaged or untracked) Git files — automatically installed via one command.
+### 🧠 Instantly see your latest unstaged or untracked Git changes — right from the terminal.
+
+A simple, fast CLI tool to list your most recently modified (unstaged or untracked) Git files — automatically installed via one command.
+
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20WSL%20%7C%20Git%20Bash-blue)
+![Built With](https://img.shields.io/badge/built%20with-Bash-yellow)
+
+## ✅ Requirements
+- Git
+- Bash-compatible shell (Linux, macOS, WSL, or Git Bash on Windows)
 
 ## 🚀 Install
 ```bash
 curl -fsSL https://raw.githubusercontent.com/barhouum7/git-recently/master/install.sh | bash
 ```
 
-## 🧩 Usage
+## 🔄 Update to latest
+Re-run the install command:
+```bash
+curl -fsSL https://raw.githubusercontent.com/barhouum7/git-recently/master/install.sh | bash
+```
 
+## 🧩 Usage
+Run inside any Git repository:
 ```bash
 git recent
 ```
 
-Output example:
-
+Example output:
 ```bash
 2025-10-30 01:23:04.123456789 +0100 src/components/Navbar.tsx
 2025-10-30 01:20:57.789012345 +0100 pages/dashboard.tsx
@@ -27,27 +42,21 @@ bash uninstall.sh
 
 ## 🧱 How It Works
 
-- Detects unstaged + untracked files.
+`git-recently` does the following under the hood:
+1. Detects **unstaged** and **untracked** files.
+2. Gets their **modification timestamps**.
+3. Sorts everything **newest first**.
+4. Displays results in a clean, colorized format.
 
-- Uses file modification timestamps.
+Works on Linux, macOS, WSL, and Git Bash on Windows.
 
-- Sorts results newest-first.
-
-- Works on Linux & macOS.
-
-
-## 📸 Demo (Coming Soon)
-
-A GIF showing `git recent` in action.
-
+## 📸 Demo
+Coming soon.
 
 ## 🧠 Built With
-
 - Bash
-
 - Git
-
-- stat (Linux/macOS)
+- `stat` (Linux/macOS)
 
 ## ⚖️ License
 

@@ -1,0 +1,3 @@
+# This helps avoid CRLF/LF issues between Windows and WSL/Linux environments
+* text=auto
+*.sh text eol=lf
