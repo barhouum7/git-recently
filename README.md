@@ -4,10 +4,12 @@
 
 A lightweight and lightning-fast CLI tool to instantly list your most recently modified (**unstaged** or **untracked**) files in any Git repository — without extra setup or dependencies.
 
-![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
-![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20WSL%20%7C%20Git%20Bash-blue)
-![Built With](https://img.shields.io/badge/built%20with-Bash-yellow)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/barhouum7/git-recently/blame/master/LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20WSL%20%7C%20Git%20Bash-blue)](https://github.com/barhouum7/git-recently)
+[![Built With](https://img.shields.io/badge/built%20with-Bash-yellow)](https://github.com/barhouum7/git-recently)
+[![Built With](https://img.shields.io/badge/Release-Stable-brightgreen.svg)](https://github.com/barhouum7/git-recently/releases/tag/v1.0.0)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/barhouum7/git-recently/releases/tag/v1.0.0)
+[![Stars](https://img.shields.io/github/stars/barhouum7/git-recently?style=social)](https://github.com/barhouum7/git-recently/stargazers)
 
 ## ✅ Requirements
 - [Git](https://git-scm.com/)
