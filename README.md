@@ -2,7 +2,7 @@
 
 ### 🧠 Instantly see your latest unstaged or untracked Git changes — right from the terminal.
 
-A simple, fast CLI tool to list your most recently modified (unstaged or untracked) Git files — automatically installed via one command.
+A lightweight, fast CLI tool to list your most recently modified (unstaged or untracked) Git files; automatically installed via one command.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20WSL%20%7C%20Git%20Bash-blue)
@@ -12,7 +12,8 @@ A simple, fast CLI tool to list your most recently modified (unstaged or untrack
 - Git
 - Bash-compatible shell (Linux, macOS, WSL, or Git Bash on Windows)
 
-## 🚀 Install
+## 🚀 Installation
+Run the following command to install `git-recently`:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/barhouum7/git-recently/master/install.sh | bash
 ```
