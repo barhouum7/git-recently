@@ -59,7 +59,10 @@ bash uninstall.sh
 ```
 
 ## 📸 Demo
-<a href="https://youtu.be/QZynN_iFDIY"><img src="https://github.com/barhouum7/git-recently/blob/master/Git-Recently_Demo.gif?raw=true" alt="Watch the demo" width="700" height="370"></a>
+
+https://github.com/user-attachments/assets/364c89b4-3345-4b83-878d-12f8c32c1501
+
+<!-- <a href="https://youtu.be/QZynN_iFDIY"><img src="https://github.com/barhouum7/git-recently/blob/master/Git-Recently_Demo.gif?raw=true" alt="Watch the demo" width="700" height="370"></a> -->
 
 
 ## 🧠 Built With
