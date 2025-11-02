@@ -22,6 +22,17 @@ Run the following command to install `git-recently`:
 curl -fsSL https://raw.githubusercontent.com/barhouum7/git-recently/master/install.sh | bash
 ```
 
+
+## Note:
+The install script is fully open-source and safe to inspect.
+You can always download and review it manually:
+```bash
+curl -fsSL https://raw.githubusercontent.com/barhouum7/git-recently/master/install.sh -o install.sh
+bash install.sh
+```
+
+It does not require sudo — it only adds a small alias to your local Git configuration.
+
 ## 🔄 Update to latest
 Simply re-run the same install command:
 ```bash
@@ -49,6 +60,20 @@ Example output:
 4. Displays results in a clean, **colorized** format.
 
 Cross-platform compatible — works seamlessly on Linux, macOS, WSL, and Git Bash.
+
+
+## 💬 Why not just use `git log --name-status`?
+
+Good question.
+`git log` is limited to showing changes in committed files.
+`git-recently` solves a different problem: tracking your current work-in-progress. It focuses on modified but uncommitted files, helping you instantly recall what you were editing when juggling multiple features or branches.
+
+## ⚙️ Design Notes
+
+The repo includes small install/uninstall scripts for convenience and clean removal.
+Fun utilities like `figlet` or `lolcat` are optional, purely cosmetic, and not required for core functionality.
+A Node.js CLI version (`npx git-recently`) is in the works for users who prefer package-based installation.
+
 
 ## 💡 Uninstall
 ```bash
